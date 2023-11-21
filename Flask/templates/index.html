@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <style>
+    html,
+    body {
+      display: flex;
+      justify-content: center;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 15px;
+    }
+    .translucent-box {
+      background-color: rgba(255, 255, 255, 0.8); 
+      padding: 10px;
+      border-radius: 10px;
+      margin: 50px; 
+      height:50%
+    }
+
+    form {
+      border: 5px solid #f1f1f1;
+    }
+
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 16px 8px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #8ebf42;
+      color: white;
+      padding: 14px 0;
+      margin: 10px 0;
+      border: none;
+      cursor: grabbing;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      font-size: 18px;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .formcontainer {
+      text-align: left;
+      margin: 24px 50px 12px;
+    }
+
+    .container {
+      padding: 16px 0;
+      text-align: left;
+    }
+
+    span.psw {
+      float: right;
+      padding-top: 0;
+      padding-right: 15px;
+    }
+
+    @media screen and (max-width: 300px) {
+      span.psw {
+        display: block;
+        float: none;
+      }
+    }
+  </style>
+</head>
+
+<body style="background: url('{{ url_for('static', filename='wp9024676-4k-zombie-wallpapers.jpg') }}') no-repeat center center fixed; background-size:cover;">
+  <div class="translucent-box">
+  <h1>ZOMBIE DETECTOR
+  <p style="margin-right:70px"> Welcome to the Zombie Identifier. Please Mention the details below as:<br>
+    Age : 1-60<br>
+    Rurality: Rural, Urban , Suburban<br>
+    Household : 1-5( number of people living)<br>
+    Water: 1-24(gallons of water)<br>
+    Food: Food, No food<br>
+    Medication: Medication, No medication<br>
+    Sanitation: Sanitation, No sanitation </p> </div>
+  <form method="post" action="/predict" id="predictionForm">
+    <label for="feature_1">Age:</label>
+    <input type="text" id="feature_1" name="feature_1"><br>
+    <label for="feature_2">Rurality:</label>
+    <input type="text" id="feature_2" name="feature_2"><br>
+    <label for="feature_3">Household:</label>
+    <input type="text" id="feature_3" name="feature_3"><br>
+    <label for="feature_4">Water:</label>
+    <input type="text" id="feature_4" name="feature_4"><br>
+    <label for="feature_5">Food:</label>
+    <input type="text" id="feature_5" name="feature_5"><br>
+    <label for="feature_6">Medication:</label>
+    <input type="text" id="feature_6" name="feature_6"><br>
+    <label for="feature_7">Sanitation:</label>
+    <input type="text" id="feature_7" name="feature_7"><br>
+    <input type="submit" value="Predict">
+    <label for="output">Output</label>
+    <input type="text" id="output" name="output">
+    <input type="Reset" value="Reset">
+    
+
+  </form>
+</body>
+<script>
+  $(document).ready(function() {
+    $("#predictionForm").submit(function(event) {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+      // Perform an asynchronous form submission using AJAX
+      $.ajax({
+        type: "POST",
+        url: "/predict",
+        data: $(this).serialize(), // Serialize form data
+        success: function(response) {
+          // Update the output field with the response
+          $("#output").val(response.prediction_text);
+        },
+        error: function(error) {
+          console.error("Error:", error);
+        }
+      });
+    });
+  });
+</script>
+
+</html>
